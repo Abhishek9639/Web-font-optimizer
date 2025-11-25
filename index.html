@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Font Loading Lab — Advanced HTML Playground</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="timeline" id="timeline">Timeline: —</div>
+  <div class="wrap">
+    <h1>Font Loading Lab — Advanced HTML / CSS / JS Playground</h1>
+    <p class="small">Now includes presets, accurate CLS via Layout Shift API, a visual timeline (NavigationStart → FCP → font-apply), self-hosting examples and a weight rendering-cost playground.</p>
+
+    <div class="grid cols-2" style="margin-top:12px">
+      <div class="card">
+        <div class="controls">
+          <label>Preset fonts</label>
+          <div class="preset-list" id="presets">
+            <div class="chip" data-url="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600;900&display=swap" data-name="Inter">Inter (Google)</div>
+            <div class="chip" data-url="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" data-name="Roboto">Roboto (Google)</div>
+            <div class="chip" data-url="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@200;400;600;800&display=swap" data-name="Source Sans 3">Source Sans 3</div>
+            <div class="chip" data-url="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" data-name="Plus Jakarta Sans">Plus Jakarta Sans</div>
+          </div>
+
+          <label>Loading strategy</label>
+          <select id="strategy">
+            <option value="swap">swap (font-display: swap)</option>
+            <option value="async">async (preload → swap)</option>
+            <option value="blocking">blocking (stylesheet)</option>
+          </select>
+
+          <label><input type="checkbox" id="preload" checked /> <span style="margin-left:8px">Enable preload hint</span></label>
+
+          <label>Primary font CSS URL (e.g. provider CSS)</label>
+          <input id="fontUrl1" type="url" value="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700&display=swap">
+
+          <label>Primary font CSS family name</label>
+          <input id="fontName1" type="text" value="Inter">
+
+          <label>Second font CSS URL (compare)</label>
+          <input id="fontUrl2" type="url" value="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap">
+
+          <label>Second font family name</label>
+          <input id="fontName2" type="text" value="Roboto">
+
+          <label>Subset (simulate unicode-range comment)</label>
+          <input id="subset" type="text" value="latin">
+
+          <label><input type="checkbox" id="variable" checked /> <span style="margin-left:8px">Variable font behavior (simulate)</span></label>
+
+          <label>Weight range</label>
+          <div class="range-row"><input id="minW" type="range" min="100" max="900" step="100" value="100"><input id="maxW" type="range" min="100" max="900" step="100" value="900"></div>
+          <div class="small"><span id="weightRange">100 - 900</span></div>
+
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button id="run" class="btn">Run test</button>
+            <button id="export" class="btn secondary">Export CSS / Self-host example</button>
+            <button id="reset" class="btn secondary">Reset</button>
+          </div>
+
+          <div style="margin-top:8px">
+            <label>Self-hosting FAQ (click to insert sample)<label>
+            <div class="small" style="margin-top:6px">
+              <button class="chip" id="insertSelfHost">Insert @font-face example into export</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div>
+          <label>Sample text</label>
+          <textarea id="sampleText" rows="4">The quick brown fox jumps over the lazy dog — 0123456789</textarea>
+
+          <div class="sample" style="margin-top:10px">
+            <div id="samplePrimary" class="lab-sample" style="font-size:18px;transition:all .18s">The quick brown fox jumps over the lazy dog — 0123456789</div>
+          </div>
+
+          <div class="sample" style="margin-top:10px">
+            <div id="sampleSecondary" class="lab-sample" style="font-size:18px;transition:all .18s">The quick brown fox jumps over the lazy dog — 0123456789</div>
+          </div>
+
+          <div style="margin-top:10px" class="metrics" id="metrics">No measurements yet.</div>
+
+          <h4 style="margin-top:12px;margin-bottom:6px">Rendering cost by weight (ms)</h4>
+          <div class="heat" id="heatmap"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:12px">
+      <div class="card">
+        <h3 style="margin-top:0">Timing & Event Log</h3>
+        <div class="log" id="log"></div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">Advanced tips</h3>
+        <ul class="small">
+          <li>Use <code>preload</code> for self-hosted <code>.woff2</code> files (set <code>crossorigin</code> and correct type).</li>
+          <li><code>font-display: optional</code> or <code>swap</code> choices depend on branding & perceived performance goals.</li>
+          <li>Variable fonts can lower bytes for many weights but profile actual file sizes and pixel-cost per weight.</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer>How to use: choose a preset or paste provider URL, pick strategy, click Run test. Timeline overlays, accurate CLS, a weight cost heatmap and self-hosting export are included.</footer>
+  </div>
+</body>
+</html>
